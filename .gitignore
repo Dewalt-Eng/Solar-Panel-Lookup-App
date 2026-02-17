@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+.env/
+.env.local
+
+# Environment Variables
+.env
+
+# Database
+*.sqlite3
+
+# Excel / Data Files
+data/
+*.xlsx
+
+# QR Code Images
+qr_codes/
+
+# Logs
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Coverage / Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Migrations (if using Alembic later)
+alembic/versions/*.pyc
