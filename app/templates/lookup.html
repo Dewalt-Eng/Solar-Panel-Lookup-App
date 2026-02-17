@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Item Lookup</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Item Details</h2>
+        <p><strong>Serial:</strong> {{ item.internal_code }}</p>
+        <p><strong>Name:</strong> {{ item.name }}</p>
+        <p><strong>Category:</strong> {{ item.category }}</p>
+
+        {% if test %}
+            <p><strong>Last Test:</strong> {{ test.test_date }}</p>
+            <p><strong>Tested By:</strong> {{ test.tested_by }}</p>
+        {% else %}
+            <p>No test records found.</p>
+        {% endif %}
+
+        <img src="/items/{{ item.internal_code }}/qr" width="200">
+
+        <br><br>
+
+        <a href="/items/{{ item.internal_code }}/qr/download">
+            <button>Download QR</button>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

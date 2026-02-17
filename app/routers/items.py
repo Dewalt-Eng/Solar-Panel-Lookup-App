@@ -1,12 +1,16 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from app.db import get_db
 from app import models, schemas
 from app.services.report_service import get_items_with_tests
 from app.services.lookup_service import get_item_with_latest_test
 from fastapi.responses import StreamingResponse
+from fastapi.templating import Jinja2Templates
 import os
 from app.services.qr_service import generate_qr_image
+
+
+templates = Jinja2Templates(directory="app/templates")
 
 
 router = APIRouter(prefix="/items", tags=["Items"])
@@ -112,4 +116,26 @@ def download_item_qr(internal_code: str):
         }
     )
 
+
+@router.get("/lookup-view")
+def lookup_view(serial: str, request: Request, db: Session = Depends(get_db)):
+
+    result = get_item_with_latest_test(db, serial)
+
+    if not result:
+        return templates.TemplateResponse(
+            "dashboard.html",
+            {"request": request, "error": "Item not found"}
+        )
+
+    item, latest_test = result
+
+    return templates.TemplateResponse(
+        "lookup.html",
+        {
+            "request": request,
+            "item": item,
+            "test": latest_test
+        }
+    )
     

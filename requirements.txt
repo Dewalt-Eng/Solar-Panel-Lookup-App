@@ -9,3 +9,4 @@ pandas
 qrcode
 pillow
 openpyxl
+jinja2
