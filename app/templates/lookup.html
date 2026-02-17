@@ -10,18 +10,31 @@
 
     <div class="card">
         <h2>Item Details</h2>
+
+        <p><strong>UUID:</strong> {{ item.id }}</p>
         <p><strong>Serial:</strong> {{ item.internal_code }}</p>
         <p><strong>Name:</strong> {{ item.name }}</p>
         <p><strong>Category:</strong> {{ item.category }}</p>
 
+        <hr>
+
+        <h3>Latest Test</h3>
+
         {% if test %}
-            <p><strong>Last Test:</strong> {{ test.test_date }}</p>
+            <p><strong>Date:</strong> {{ test.test_date }}</p>
             <p><strong>Tested By:</strong> {{ test.tested_by }}</p>
+            <p><strong>Result:</strong> 
+                <span class="badge {{ test.result|lower }}">
+                    {{ test.result }}
+                </span>
+            </p>
         {% else %}
             <p>No test records found.</p>
         {% endif %}
 
-        <img src="/items/{{ item.internal_code }}/qr" width="200">
+        <hr>
+
+        <img src="/items/{{ item.internal_code }}/qr" width="220">
 
         <br><br>
 

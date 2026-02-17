@@ -38,3 +38,39 @@ input[type="file"] {
     padding: 6px;
     width: 60%;
 }
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+.badge.pass {
+    background-color: #28a745;
+}
+
+.badge.fail {
+    background-color: #dc3545;
+}
+
+.badge.pending {
+    background-color: #ffc107;
+    color: black;
+}

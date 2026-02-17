@@ -8,6 +8,22 @@
 
 <div class="container">
     <h1>Warehouse QR Dashboard</h1>
+    
+    {% if request.query_params.get("status") == "solar_success" %}
+    <div class="success">Solar units imported successfully.</div>
+    {% endif %}
+
+    {% if request.query_params.get("status") == "tests_success" %}
+    <div class="success">Panel tests imported successfully.</div>
+    {% endif %}
+
+    {% if request.query_params.get("status") == "solar_error" %}
+    <div class="error">Error importing solar units.</div>
+    {% endif %}
+
+    {% if request.query_params.get("status") == "tests_error" %}
+    <div class="error">Error importing panel tests.</div>
+    {% endif %}
 
     <div class="card">
         <h2>Import Solar Units</h2>
