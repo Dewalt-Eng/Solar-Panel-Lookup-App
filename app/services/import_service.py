@@ -101,18 +101,17 @@ def import_panel_tests(db, file_path: str):
     db.commit()
 
     # Export failed rows if any
-    if failed_rows:
-        failed_df = pd.DataFrame(failed_rows)
+    #if failed_rows:
+        #failed_df = pd.DataFrame(failed_rows)
 
-        output_path = "data/failed_tests_import.csv"
+        #output_path = "data/failed_tests_import.csv"
 
         # Ensure data folder exists
         #import os
         #os.makedirs("data", exist_ok=True)
+        #failed_df.to_csv(output_path, index=False)
 
-        failed_df.to_csv(output_path, index=False)
-
-        print(f"Failed rows exported to {output_path}")
+        #print(f"Failed rows exported to {output_path}")
 
     print(f"Tests inserted: {inserted}")
     print(f"Tests skipped: {skipped}")
