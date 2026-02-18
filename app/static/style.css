@@ -1,6 +1,20 @@
+:root {
+    --brand-primary: #008AD1;
+    --brand-accent: #FFCD07;
+    --brand-danger: #CE181E;
+    --brand-grey: #f4f6f8;
+}
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f6f8;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 40px 0 40px;
 }
 
 .container {
@@ -22,7 +36,7 @@ h1 {
 
 button {
     padding: 8px 16px;
-    background-color: #0077cc;
+    background-color: var(--brand-primary);
     color: white;
     border: none;
     border-radius: 4px;
@@ -30,7 +44,7 @@ button {
 }
 
 button:hover {
-    background-color: #005fa3;
+    background-color: #006fa8;
 }
 
 input[type="text"],
@@ -74,3 +88,52 @@ input[type="file"] {
     background-color: #ffc107;
     color: black;
 }
+
+.secondary-btn {
+    padding: 8px 16px;
+    background-color: var(--brand-accent);
+    color: black;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.secondary-btn:hover {
+    background-color: #5a6268;
+}
+
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.items-table th,
+.items-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.items-table th {
+    background-color: #f4f6f8;
+}
+
+.items-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.header {
+    background-color: #008AD1;   /* Brand blue */
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+}
+
+.brand-logo {
+    height: 50px;
+    margin-right: 20px;
+}
+

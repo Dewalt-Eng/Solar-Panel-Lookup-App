@@ -6,22 +6,33 @@
 </head>
 <body>
 
+<div class="header">
+    <img src="/static/brand/logo_full.png" class="brand-logo">
+    <form action="/" method="get" style="margin-left:auto;">
+        <button type="submit" class="secondary-btn">
+            ←Dashboard
+        </button>
+    </form>
+</div>
+
+
 <div class="container">
+
 
     <div class="card">
         <h2>Item Details</h2>
 
-        <p><strong>UUID:</strong> {{ item.id }}</p>
+        <p><strong>Reference ID:</strong> {{ item.reference_code }}</p>
         <p><strong>Serial:</strong> {{ item.internal_code }}</p>
-        <p><strong>Name:</strong> {{ item.name }}</p>
-        <p><strong>Category:</strong> {{ item.category }}</p>
+        <p><strong>Type:</strong> {{ item.name }}</p>
+        <p><strong>Manufacturer:</strong> {{ item.category }}</p>
 
         <hr>
 
         <h3>Latest Test</h3>
 
         {% if test %}
-            <p><strong>Date:</strong> {{ test.test_date }}</p>
+            <p><strong>Test Date:</strong> {{ test.test_date }}</p>
             <p><strong>Tested By:</strong> {{ test.tested_by }}</p>
             <p><strong>Result:</strong> 
                 <span class="badge {{ test.result|lower }}">

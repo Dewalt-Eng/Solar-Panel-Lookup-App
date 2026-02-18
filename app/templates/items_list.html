@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Items</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="top-bar">
+    <form action="/" method="get">
+        <button type="submit" class="secondary-btn">
+            ← Dashboard
+        </button>
+    </form>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h2>All Registered Panels</h2>
+
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Serial number</th>
+                    <th>Internal ID</th>
+                    <th>Manufacturer</th>
+                    <th>QR</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <a href="/items/lookup-view?serial={{ item.internal_code }}">
+                            {{ item.internal_code }}
+                        </a>
+                        <br>
+                        <small style="color: gray;">
+                            {{ item.id }}
+                        </small>
+                    </td>
+                    <td>{{ item.reference_code }}</td>
+                    <td>{{ item.category }}</td>
+                    <td>
+                        <a href="/items/{{ item.internal_code }}/qr" target="_blank">
+                            View QR
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

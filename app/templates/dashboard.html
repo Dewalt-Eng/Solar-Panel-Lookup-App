@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" type="image/png" href="/static/brand/favicon_64.png">
     <title>Warehouse Dashboard</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
+<div class="header">
+    <img src="/static/brand/logo_full.png" class="brand-logo">
+    <h1>Warehouse Control Panel</h1>
+</div>    
+
+
 <div class="container">
-    <h1>Warehouse QR Dashboard</h1>
+    <h1>Circular-Energy QR App</h1>
     
     {% if request.query_params.get("status") == "solar_success" %}
     <div class="success">Solar units imported successfully.</div>
@@ -26,28 +33,37 @@
     {% endif %}
 
     <div class="card">
-        <h2>Import Solar Units</h2>
+        <h2>Import Solar Panel Data (*first)</h2>
         <form action="/upload/solar" method="post" enctype="multipart/form-data">
             <input type="file" name="file" required>
-            <button type="submit">Upload Solar Units</button>
+            <button type="submit">Upload Solar Units File</button>
         </form>
     </div>
 
     <div class="card">
-        <h2>Import Panel Tests</h2>
+        <h2>Import Panel Tests Data</h2>
         <form action="/upload/tests" method="post" enctype="multipart/form-data">
             <input type="file" name="file" required>
-            <button type="submit">Upload Panel Tests</button>
+            <button type="submit">Upload Panel Tests File</button>
         </form>
     </div>
 
     <div class="card">
-        <h2>QR Lookup</h2>
+        <h2>QR Lookup using Serial Number</h2>
         <form action="/items/lookup-view" method="get">
             <input type="text" name="serial" placeholder="Enter Serial Number" required>
             <button type="submit">View Item</button>
         </form>
     </div>
+
+    <div style="margin-top: 15px;">
+        <form action="/items/all" method="get">
+            <button type="submit" class="secondary-btn">
+            View All Panel QR's
+            </button>
+        </form>
+    </div>
+
 
 </div>
 

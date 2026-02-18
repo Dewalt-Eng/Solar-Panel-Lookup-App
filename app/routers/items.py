@@ -117,18 +117,35 @@ def download_item_qr(internal_code: str):
     )
 
 
+
 @router.get("/lookup-view")
-def lookup_view(serial: str, request: Request, db: Session = Depends(get_db)):
+def lookup_view(
+    serial: str,
+    request: Request,
+    db: Session = Depends(get_db)
+):
 
-    result = get_item_with_latest_test(db, serial)
+    # Find item by internal serial
+    item = db.query(models.Item).filter_by(
+        internal_code=serial
+    ).first()
 
-    if not result:
+    if not item:
         return templates.TemplateResponse(
             "dashboard.html",
-            {"request": request, "error": "Item not found"}
+            {
+                "request": request,
+                "error": "Item not found"
+            }
         )
 
-    item, latest_test = result
+    # Get latest test
+    latest_test = (
+        db.query(models.PanelTest)
+        .filter_by(item_id=item.id)
+        .order_by(models.PanelTest.test_date.desc())
+        .first()
+    )
 
     return templates.TemplateResponse(
         "lookup.html",
@@ -136,6 +153,20 @@ def lookup_view(serial: str, request: Request, db: Session = Depends(get_db)):
             "request": request,
             "item": item,
             "test": latest_test
+        }
+    )
+
+
+@router.get("/all")
+def view_all_items(request: Request, db: Session = Depends(get_db)):
+
+    items = db.query(models.Item).order_by(models.Item.internal_code).all()
+
+    return templates.TemplateResponse(
+        "items_list.html",
+        {
+            "request": request,
+            "items": items
         }
     )
     
