@@ -101,21 +101,28 @@ def get_item_qr(internal_code: str):
     
 
 @router.get("/{internal_code}/qr/download")
-def download_item_qr(internal_code: str):
+def download_item_qr(internal_code: str, db: Session = Depends(get_db)):
 
-    base_url = os.getenv("BASE_URL")
-    lookup_url = f"{base_url}/items/lookup/{internal_code}"
+    base_url = os.getenv("BASE_URL", "http://127.0.0.1:8000")
+
+    lookup_url = f"{base_url}/items/lookup-view?serial={internal_code}"
 
     image_buffer = generate_qr_image(lookup_url)
+
+    # Optional: use reference_code as filename
+    item = db.query(models.Item).filter_by(
+        internal_code=internal_code
+    ).first()
+
+    filename = item.reference_code if item else internal_code
 
     return StreamingResponse(
         image_buffer,
         media_type="image/png",
         headers={
-            "Content-Disposition": f"attachment; filename={internal_code}.png"
+            "Content-Disposition": f"attachment; filename={filename}.png"
         }
     )
-
 
 
 @router.get("/lookup-view")

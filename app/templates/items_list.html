@@ -26,6 +26,7 @@
                     <th>Internal ID</th>
                     <th>Manufacturer</th>
                     <th>QR</th>
+                    <th>Download QR</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +47,13 @@
                         <a href="/items/{{ item.internal_code }}/qr" target="_blank">
                             View QR
                         </a>
+                    </td>
+                    <td>
+                        <form action="/items/{{ item.internal_code }}/qr/download" method="get">
+                        <button type="submit" class="secondary-btn table-btn">
+                                Download
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
