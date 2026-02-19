@@ -10,7 +10,7 @@ def generate_qr_image(url: str):
     qr = qrcode.QRCode(
         version=None,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
-        box_size=16,
+        box_size=12,
         border=4,
     )
 

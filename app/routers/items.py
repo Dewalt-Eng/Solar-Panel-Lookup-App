@@ -90,7 +90,8 @@ def lookup_item(internal_code: str, db: Session = Depends(get_db)):
 def get_item_qr(internal_code: str):
 
     base_url = os.getenv("BASE_URL")
-    lookup_url = f"{base_url}/items/lookup/{internal_code}"
+    #lookup_url = f"{base_url}/items/lookup/{internal_code}"
+    lookup_url = f"{base_url}/items/lookup-view?serial={internal_code}"
 
     image_buffer = generate_qr_image(lookup_url)
 
