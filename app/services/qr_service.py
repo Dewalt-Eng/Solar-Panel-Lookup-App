@@ -10,7 +10,7 @@ def generate_qr_image(url: str):
     qr = qrcode.QRCode(
         version=None,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
-        box_size=12,
+        box_size=16,
         border=4,
     )
 
@@ -25,26 +25,32 @@ def generate_qr_image(url: str):
 
     qr_width, qr_height = img.size
 
-    # Load branded square logo
+    # Load logo
     logo_path = os.path.join("app", "static", "brand", "logo_square_128.png")
     logo = Image.open(logo_path).convert("RGBA")
 
-    # Resize logo safely (important for scan reliability)
-    logo_size = qr_width // 6   # 20% of QR width
+    # Make logo slightly smaller
+    logo_size = int(qr_width * 0.20)   # reduce actual logo to 20%
     logo = logo.resize((logo_size, logo_size), Image.LANCZOS)
 
-    # Calculate center position
+    # Add generous padding
+    padding = int(logo_size * 0.10)    # 10% padding
+    bg_size = logo_size + (padding * 2)
+
+    white_bg = Image.new("RGBA", (bg_size, bg_size), "white")
+
+    # Center logo inside padded area
+    white_bg.paste(logo, (padding, padding), logo)
+
+    # Position in QR center
     pos = (
-        (qr_width - logo_size) // 2,
-        (qr_height - logo_size) // 2
+        (qr_width - bg_size) // 2,
+        (qr_height - bg_size) // 2
     )
 
-    # Create white background for logo to improve scan contrast
-    white_bg = Image.new("RGBA", (logo_size, logo_size), "white")
-    img.paste(white_bg, pos)
+    img = img.convert("RGBA")
+    img.paste(white_bg, pos, white_bg)
 
-    # Paste logo on top
-    img.paste(logo, pos, mask=logo)
 
     # Save to memory buffer (NOT filesystem)
     buffer = io.BytesIO()
