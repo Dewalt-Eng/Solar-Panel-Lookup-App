@@ -1,52 +1,35 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link rel="icon" type="image/png" href="/static/brand/favicon_64.png">
-    <title>Solar Panel Dashboard</title>
+    <title>Solar Panel Lookup App</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
+
 <body>
 
-<div class="header">
-    <img src="/static/brand/logo_full.png" class="brand-logo">
+<div class="hero">
     <h1>Solar Panel Lookup Control App</h1>
-</div>    
+</div>   
 
 
 <div class="container">
-    <h1>QR Generation and Lookup</h1>
-    
-    {% if request.query_params.get("status") == "solar_success" %}
-    <div class="success">Solar units imported successfully.</div>
-    {% endif %}
+    <h1>File upload and QR Lookup</h1>      
 
-    {% if request.query_params.get("status") == "tests_success" %}
-    <div class="success">Panel tests imported successfully.</div>
-    {% endif %}
+{% if request.query_params.get("status") and "import_success" in request.query_params.get("status") %}
+<div class="success">
+    Import completed successfully.
+</div>
+{% endif %}
 
-    {% if request.query_params.get("status") == "solar_error" %}
-    <div class="error">Error importing solar units.</div>
-    {% endif %}
-
-    {% if request.query_params.get("status") == "tests_error" %}
-    <div class="error">Error importing panel tests.</div>
-    {% endif %}
-
-    <div class="card">
-        <h2>Import Solar Panel Data (*first)</h2>
-        <form action="/upload/solar" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" required>
-            <button type="submit">Upload Solar Units File</button>
-        </form>
-    </div>
-
-    <div class="card">
-        <h2>Import Panel Tests Data</h2>
-        <form action="/upload/tests" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" required>
-            <button type="submit">Upload Panel Tests File</button>
-        </form>
-    </div>
+<div class="card">
+    <h2>Import Solar Panel Datasheet</h2>
+    <form action="/upload/import" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload Datasheet</button>
+    </form>
+</div>
 
     <div class="card">
         <h2>QR Lookup using Serial Number</h2>
@@ -67,5 +50,13 @@
 
 </div>
 
+<div class="branding-footer">
+    <img src="/static/brand/logo_full.png" alt="Energy4Hope Logo">
+</div>
+
 </body>
 </html>
+
+
+
+

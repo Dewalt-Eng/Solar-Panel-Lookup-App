@@ -2,8 +2,16 @@ import pandas as pd
 from app import models
 from datetime import datetime
 
+def clean_serial(value):
+    return (
+        str(value)
+        .strip()
+        .replace("'", "")
+        .replace('"', "")
+        .replace(" ", "")
+    )
 
-def import_items(db, file_path: str):
+def import_master_sheet(db, file_path: str):
 
     df = pd.read_excel(file_path, dtype=str)
 
@@ -14,114 +22,88 @@ def import_items(db, file_path: str):
         .str.replace(" ", "_")
     )
 
-    inserted = 0
-    skipped = 0
+    inserted_items = 0
+    updated_items = 0
+    inserted_tests = 0
+    updated_tests = 0
 
     for _, row in df.iterrows():
 
-        serial = clean_serial(row["serial_number"])
+        serial = row.get("serial_number")
 
-        existing = db.query(models.Item).filter_by(
-            internal_code=serial
-        ).first()
-
-        if existing:
-            skipped += 1
+        if not serial:
             continue
 
-        item = models.Item(
-            internal_code=serial,
-            name=str(row.get("model", "")).strip(),
-            category=str(row.get("unit_type", "")).strip()
-        )
+        serial = str(serial).strip()
 
-        db.add(item)
-        inserted += 1
-
-    db.commit()
-
-    print(f"Items inserted: {inserted}")
-    print(f"Items skipped: {skipped}")
-
-
-
-def import_panel_tests(db, file_path: str):
-
-    df = pd.read_excel(file_path)
-
-    # Normalize column names
-    df.columns = (
-        df.columns
-        .str.strip()
-        .str.lower()
-        .str.replace(" ", "_")
-    )
-
-    inserted = 0
-    skipped = 0
-
-    failed_rows = []
-
-    for _, row in df.iterrows():
-
-        serial = clean_serial(row["serial_number"])
-
+        # ---------- ITEM UPSERT ----------
         item = db.query(models.Item).filter_by(
             internal_code=serial
         ).first()
 
         if not item:
-            failed_rows.append({
-                "serial_number": serial,
-                "reason": "Item not found"
-            })
-            skipped += 1
+            item = models.Item(
+                internal_code=serial,
+                name=str(row.get("model") or "").strip(),
+                category=str(row.get("unit_type") or "").strip()
+            )
+            db.add(item)
+            db.flush()
+            inserted_items += 1
+        else:
+            # Update fields if changed
+            new_name = str(row.get("model") or "").strip()
+            new_category = str(row.get("unit_type") or "").strip()
+
+            if item.name != new_name or item.category != new_category:
+                item.name = new_name
+                item.category = new_category
+                updated_items += 1
+
+        # ---------- TEST UPSERT ----------
+        new_tested_by = str(row.get("tested_by") or "").strip()
+        new_result = str(row.get("result") or "").strip()
+
+        test_date_raw = row.get("test_date")
+
+        if not test_date_raw:
             continue
 
-        if pd.isna(row["test_date"]):
-            failed_rows.append({
-                "serial_number": serial,
-                "reason": "Missing test_date"
-            })
-            skipped += 1
+        # Convert safely
+        test_date = pd.to_datetime(test_date_raw, errors="coerce")
+
+        # Skip invalid / empty dates
+        if pd.isna(test_date):
             continue
 
-        test_date = pd.to_datetime(row["test_date"]).date()
+        test_date = test_date.date()
 
-        test = models.PanelTest(
+        test = db.query(models.PanelTest).filter_by(
             item_id=item.id,
-            test_date=test_date,
-            tested_by=str(row.get("tested_by", "")).strip(),
-            result=str(row.get("result", "")).strip()
-        )
+            test_date=test_date
+        ).first()
 
-        db.add(test)
-        inserted += 1
+        new_tested_by = (row.get("tested_by") or "").strip()
+        new_result = (row.get("result") or "").strip()
+
+        if not test:
+            test = models.PanelTest(
+                item_id=item.id,
+                test_date=test_date,
+                tested_by=new_tested_by,
+                result=new_result
+            )
+            db.add(test)
+            inserted_tests += 1
+        else:
+            if (
+                test.tested_by != new_tested_by or
+                test.result != new_result
+            ):
+                test.tested_by = new_tested_by
+                test.result = new_result
+                updated_tests += 1
 
     db.commit()
 
-    # Export failed rows if any
-    #if failed_rows:
-        #failed_df = pd.DataFrame(failed_rows)
-
-        #output_path = "data/failed_tests_import.csv"
-
-        # Ensure data folder exists
-        #import os
-        #os.makedirs("data", exist_ok=True)
-        #failed_df.to_csv(output_path, index=False)
-
-        #print(f"Failed rows exported to {output_path}")
-
-    print(f"Tests inserted: {inserted}")
-    print(f"Tests skipped: {skipped}")
-
-def clean_serial(value):
-    return (
-        str(value)
-        .strip()
-        .replace("'", "")
-        .replace('"', "")
-        .replace(" ", "")
-    )
-
+    return inserted_items, updated_items, inserted_tests, updated_tests

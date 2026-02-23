@@ -17,47 +17,56 @@
 <div class="container">
 
     <div class="card">
+        <div style="text-align: right; margin-bottom: 15px;">
+            <a href="/items/qr/download-all">
+                <button class="secondary-btn">
+                    Download All QR Codes
+                </button>
+            </a>
+        </div>
         <h2>All Registered Panels</h2>
 
-        <table class="items-table">
-            <thead>
-                <tr>
-                    <th>Serial number</th>
-                    <th>Internal ID</th>
-                    <th>Manufacturer</th>
-                    <th>QR</th>
-                    <th>Download QR</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                <tr>
-                    <td>
-                        <a href="/items/lookup-view?serial={{ item.internal_code }}">
-                            {{ item.internal_code }}
-                        </a>
-                        <br>
-                        <small style="color: gray;">
-                            {{ item.id }}
-                        </small>
-                    </td>
-                    <td>{{ item.reference_code }}</td>
-                    <td>{{ item.category }}</td>
-                    <td>
-                        <a href="/items/{{ item.internal_code }}/qr" target="_blank">
-                            View QR
-                        </a>
-                    </td>
-                    <td>
-                        <form action="/items/{{ item.internal_code }}/qr/download" method="get">
-                        <button type="submit" class="secondary-btn table-btn">
-                                Download
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Serial Number</th>
+                        <th>Internal ID</th>
+                        <th>Manufacturer</th>
+                        <th>QR Codes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>
+                            <a href="/items/lookup-view?serial={{ item.internal_code }}" class="serial-link">
+                                {{ item.internal_code }}
+                            </a>
+                            <div class="uuid-text">
+                                {{ item.id }}
+                            </div>
+                        </td>
+
+                        <td>{{ item.reference_code }}</td>
+
+                        <td>{{ item.category }}</td>
+
+                        <td class="action-cell">
+                            <a href="/items/{{ item.internal_code }}/qr" target="_blank">
+                                <button class="secondary-btn table-btn">
+                                    View QR
+                                </button>
+                            </a>
+
+                            <a href="/items/{{ item.internal_code }}/qr/download" target="_blank">
+                                <button class="secondary-btn table-btn">
+                                    Download QR
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
         </table>
 
     </div>
