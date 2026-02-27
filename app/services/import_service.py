@@ -11,6 +11,27 @@ def clean_serial(value):
         .replace(" ", "")
     )
 
+def safe_float(value):
+    try:
+        if value in [None, "", "nan"]:
+            return None
+        return float(value)
+    except:
+        return None
+
+def safe_int(value):
+    try:
+        if value in [None, "", "nan"]:
+            return None
+        return int(float(value))
+    except:
+        return None
+
+def safe_str(value):
+    if value in [None, "", "nan"]:
+        return None
+    return str(value).strip()
+
 def import_master_sheet(db, file_path: str):
 
     df = pd.read_excel(file_path, dtype=str)
@@ -44,35 +65,41 @@ def import_master_sheet(db, file_path: str):
         if not item:
             item = models.Item(
                 internal_code=serial,
-                name=str(row.get("model") or "").strip(),
-                category=str(row.get("unit_type") or "").strip()
+                name=safe_str(row.get("model")),
+                category=safe_str(row.get("unit_type")),
+                manufacturer=safe_str(row.get("manufacturer")),
+                length=safe_float(row.get("length")),
+                width=safe_float(row.get("width")),
+                thickness=safe_float(row.get("thickness")),
+                area=safe_float(row.get("area")),
+                number_of_cells=safe_int(row.get("number_of_cells")),
+                junction_box_ip_rating=safe_str(row.get("junction_box_ip_rating")),
+                new_serial_number=safe_str(row.get("new_serial_number"))
             )
             db.add(item)
             db.flush()
             inserted_items += 1
         else:
-            # Update fields if changed
-            new_name = str(row.get("model") or "").strip()
-            new_category = str(row.get("unit_type") or "").strip()
-
-            if item.name != new_name or item.category != new_category:
-                item.name = new_name
-                item.category = new_category
-                updated_items += 1
+            # Update item fields
+            item.name = safe_str(row.get("model"))
+            item.category = safe_str(row.get("unit_type"))
+            item.manufacturer = safe_str(row.get("manufacturer"))
+            item.length = safe_float(row.get("length"))
+            item.width = safe_float(row.get("width"))
+            item.thickness = safe_float(row.get("thickness"))
+            item.area = safe_float(row.get("area"))
+            item.number_of_cells = safe_int(row.get("number_of_cells"))
+            item.junction_box_ip_rating = safe_str(row.get("junction_box_ip_rating"))
+            item.new_serial_number = safe_str(row.get("new_serial_number"))
+            updated_items += 1
 
         # ---------- TEST UPSERT ----------
-        new_tested_by = str(row.get("tested_by") or "").strip()
-        new_result = str(row.get("result") or "").strip()
 
         test_date_raw = row.get("test_date")
-
         if not test_date_raw:
             continue
 
-        # Convert safely
         test_date = pd.to_datetime(test_date_raw, errors="coerce")
-
-        # Skip invalid / empty dates
         if pd.isna(test_date):
             continue
 
@@ -83,26 +110,32 @@ def import_master_sheet(db, file_path: str):
             test_date=test_date
         ).first()
 
-        new_tested_by = (row.get("tested_by") or "").strip()
-        new_result = (row.get("result") or "").strip()
+        tested_by = safe_str(row.get("tested_by"))
+        result = safe_str(row.get("result"))
 
         if not test:
             test = models.PanelTest(
                 item_id=item.id,
                 test_date=test_date,
-                tested_by=new_tested_by,
-                result=new_result
+                tested_by=tested_by,
+                result=result,
+                solution_resistivity=safe_float(row.get("solution_resistivity")),
+                solution_temp=safe_float(row.get("solution_temp")),
+                voltage_applied=safe_float(row.get("voltage_applied")),
+                insulation_resistance=safe_float(row.get("insulation_resistance")),
+                pass_fail_threshold=safe_float(row.get("pass_fail_threshold"))
             )
             db.add(test)
             inserted_tests += 1
         else:
-            if (
-                test.tested_by != new_tested_by or
-                test.result != new_result
-            ):
-                test.tested_by = new_tested_by
-                test.result = new_result
-                updated_tests += 1
+            test.tested_by = tested_by
+            test.result = result
+            test.solution_resistivity = safe_float(row.get("solution_resistivity"))
+            test.solution_temp = safe_float(row.get("solution_temp"))
+            test.voltage_applied = safe_float(row.get("voltage_applied"))
+            test.insulation_resistance = safe_float(row.get("insulation_resistance"))
+            test.pass_fail_threshold = safe_float(row.get("pass_fail_threshold"))
+            updated_tests += 1
 
     db.commit()
 

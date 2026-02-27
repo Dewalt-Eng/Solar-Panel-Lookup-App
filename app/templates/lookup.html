@@ -1,60 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Item Lookup</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Panel Technical Specification</title>
+    <link rel="stylesheet" href="/static/style.css?v=3">
 </head>
 <body>
 
-
 <div class="header">
-    <img src="/static/brand/logo_square_128.png" class="brand-logo">
-    <form action="/" method="get" style="margin-left:auto;">
-        <!-- 
-        <button type="submit" class="secondary-btn">
-            ←Dashboard
-        </button>
-        -->
-    </form>
+    <img src="/static/brand/logo_square_256.png" class="brand-logo">
 </div>
-
 
 <div class="container">
 
-
     <div class="card">
-        <h2>Item Details</h2>
 
-        <p><strong>Reference ID:</strong> {{ item.reference_code }}</p>
-        <p><strong>Serial:</strong> {{ item.internal_code }}</p>
-        <p><strong>Type:</strong> {{ item.name }}</p>
-        <p><strong>Manufacturer:</strong> {{ item.category }}</p>
+        <h2 class="section-title">Panel Technical Specification</h2>
 
-        <hr>
+        <div class="spec-grid">
 
-        <h3>Latest Test</h3>
+            <!-- BASIC INFO -->
+            <div class="spec-block">
+                <h3>Panel ID Specification</h3>
+                <p><strong>Reference ID:</strong> {{ item.reference_code }}</p>
+                <p><strong>Serial:</strong> {{ item.internal_code }}</p>
+                <p><strong>Manufacturer:</strong> {{ item.manufacturer }}</p>
+                <p><strong>Model Type:</strong> {{ item.name }}</p>
+                <p><strong>Technology:</strong> {{ item.category }}</p>
+            </div>
+
+            <!-- DIMENSIONS -->
+            <div class="spec-block">
+                <h3>Physical Specifications</h3>
+                <p><strong>Length:</strong> {{ item.length }} m</p>
+                <p><strong>Width:</strong> {{ item.width }} m</p>
+                <p><strong>Thickness:</strong> {{ item.thickness }} mm</p>
+                <p><strong>Area:</strong> {{ item.area }} m²</p>
+                <p><strong>Number of Cells:</strong> {{ item.number_of_cells }}</p>
+                <p><strong>Junction Box IP Rating:</strong> {{ item.junction_box_ip_rating }}</p>
+            </div>
+
+        </div>
+
+        <hr class="divider">
+
+        <!-- TEST SECTION -->
+        <h2 class="section-title">Panel Test & Electrical Data</h2>
 
         {% if test %}
-            <p><strong>Test Date:</strong> {{ test.test_date }}</p>
-            <p><strong>Tested By:</strong> {{ test.tested_by }}</p>
-            <p><strong>Result:</strong> 
-                <span class="badge {{ test.result|lower }}">
-                    {{ test.result }}
-                </span>
-            </p>
+
+        <div class="spec-grid">
+
+            <div class="spec-block">
+                <h3>Test Information</h3>
+                <p><strong>Test Date:</strong> {{ test.test_date }}</p>
+                <p><strong>Tested By:</strong> {{ test.tested_by }}</p>
+                <p><strong></p>
+                <div class="result-block">
+                    <p>
+                        <strong>Result:</strong>
+                        <span class="badge {{ 'pass' if test.result == 'Pass' else 'fail' }}">
+                            {{ test.result }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="spec-block">
+                <h3>Panel Testing Parameters</h3>
+                <p><strong>Solution Resistivity:</strong> {{ test.solution_resistivity }} Ω-cm</p>
+                <p><strong>Solution Temperature:</strong> {{ test.solution_temp }} °C</p>
+                <p><strong>Voltage Applied:</strong> {{ test.voltage_applied }} V</p>
+                <p><strong>Insulation Resistance:</strong> {{ test.insulation_resistance }} MΩ</p>
+                <p><strong>Pass/Fail Threshold:</strong> {{ test.pass_fail_threshold }} MΩ</p>
+                
+            </div>
+
+        </div>
+
         {% else %}
-            <p>No test records found.</p>
+        <p>No test records available.</p>
         {% endif %}
 
-        <hr>
+        <hr class="divider">
 
-        <img src="/items/{{ item.internal_code }}/qr" width="220">
-
-        <br><br>
-
-        <a href="/items/{{ item.internal_code }}/qr/download">
-            <button>Download QR</button>
-        </a>
+        <!-- QR SECTION -->
+        <div class="qr-section">
+            <img src="/items/{{ item.internal_code }}/qr" class="qr-image">
+            <br><br>
+            <form action="/items/{{ item.internal_code }}/qr/download" method="get">
+                <button type="submit">Download QR</button>
+            </form>
+        </div>
 
     </div>
 

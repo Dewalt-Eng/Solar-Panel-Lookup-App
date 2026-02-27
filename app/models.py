@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, Date, ForeignKey
+from sqlalchemy import Column, String, Date, ForeignKey, Float, Integer
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from app.db import Base
@@ -20,6 +20,14 @@ class Item(Base):
     reference_code = Column(String, unique=True, index=True, default=generate_reference_code)
     name = Column(String, nullable=False)
     category = Column(String, nullable=False)
+    manufacturer = Column(String, nullable=False)
+    length = Column(Float, nullable=True)
+    width = Column(Float, nullable=True)
+    thickness = Column(Float, nullable=True)
+    area = Column(Float, nullable=True)
+    number_of_cells = Column(Integer, nullable=True)
+    junction_box_ip_rating = Column(String, nullable=True)
+    new_serial_number = Column(String, nullable=True)
 
     tests = relationship(
         "PanelTest",
@@ -42,6 +50,11 @@ class PanelTest(Base):
     test_date = Column(Date, nullable=True)
     tested_by = Column(String, nullable=True)
     result = Column(String, nullable=True)
+    solution_resistivity = Column(Float, nullable=True)
+    solution_temp = Column(Float, nullable=True)
+    voltage_applied = Column(Float, nullable=True)
+    insulation_resistance = Column(Float, nullable=True)
+    pass_fail_threshold = Column(Float, nullable=True)
 
     item = relationship(
         "Item",

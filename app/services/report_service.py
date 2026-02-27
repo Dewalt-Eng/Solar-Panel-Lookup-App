@@ -10,7 +10,7 @@ def get_items_with_tests(db: Session):
             models.Item.id,
             models.Item.internal_code,
             models.Item.name,
-            models.Item.category,
+            models.Item.manufacturer,
             models.PanelTest.test_date,
             models.PanelTest.tested_by,
             models.PanelTest.result

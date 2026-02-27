@@ -30,6 +30,7 @@
                 <thead>
                     <tr>
                         <th>Serial Number</th>
+                        <th>New Serial Number</th>
                         <th>Internal ID</th>
                         <th>Manufacturer</th>
                         <th>QR Codes</th>
@@ -46,10 +47,11 @@
                                 {{ item.id }}
                             </div>
                         </td>
+                        <td>{{ item.new_serial_number }}</td>
 
                         <td>{{ item.reference_code }}</td>
 
-                        <td>{{ item.category }}</td>
+                        <td>{{ item.manufacturer }}</td>
 
                         <td class="action-cell">
                             <a href="/items/{{ item.internal_code }}/qr" target="_blank">
