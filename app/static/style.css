@@ -298,3 +298,26 @@ input[type="file"] {
 .qr-image {
     width: 300px;
 }
+
+.faq-section {
+    margin-top: 40px;
+    padding: 25px;
+    background: #f9fbfc;
+    border-radius: 10px;
+    border-left: 5px solid var(--brand-primary);
+}
+
+.faq-section p {
+    margin: 12px 0;
+    font-size: 14px;
+}
+
+.faq-link {
+    color: var(--brand-primary);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.faq-link:hover {
+    text-decoration: underline;
+}
