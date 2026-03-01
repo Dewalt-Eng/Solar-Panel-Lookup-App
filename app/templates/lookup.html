@@ -20,7 +20,7 @@
 
             <!-- BASIC INFO -->
             <div class="spec-block">
-                <h3>Panel ID Specification</h3>
+                <h3>Panel ID Specifications</h3>
                 <p><strong>Reference ID:</strong> {{ item.reference_code }}</p>
                 <p><strong>Serial:</strong> {{ item.internal_code }}</p>
                 <p><strong>Manufacturer:</strong> {{ item.manufacturer }}</p>
@@ -51,12 +51,14 @@
         <div class="spec-grid">
 
             <div class="spec-block">
-                <h3>Test Information</h3>
+                <h3>Testing Summary</h3>
+                <br>
                 <p><strong>Test Date:</strong> {{ test.test_date }}</p>
                 <p><strong>Tested By:</strong> {{ test.tested_by }}</p>
-                <p><strong></p>
+                <p><strong></p>  
                 <div class="result-block">
                     <p>
+                        <br>
                         <strong>Result:</strong>
                         <span class="badge {{ 'pass' if test.result == 'Pass' else 'fail' }}">
                             {{ test.result }}
@@ -66,7 +68,7 @@
             </div>
 
             <div class="spec-block">
-                <h3>Panel Testing Parameters</h3>
+                <h3>Panel Test Parameters</h3>
                 <p><strong>Solution Resistivity:</strong> {{ test.solution_resistivity }} Ω-cm</p>
                 <p><strong>Solution Temperature:</strong> {{ test.solution_temp }} °C</p>
                 <p><strong>Voltage Applied:</strong> {{ test.voltage_applied }} V</p>
@@ -108,12 +110,15 @@
                     target="_blank"
                     class="faq-link">
                     https://circular-energy.org/request-collection/
+                    <br>
                     </a>
                 </p>
 
                 <p>
                     Alternatively, for more information, please call us on:
-                    <strong>+27 (0) 87 354 9046</strong>
+                    <strong>
+                    <br><br>    
+                    +27 (0) 87 354 9046</strong>
                 </p>
             </div>
     </div>
