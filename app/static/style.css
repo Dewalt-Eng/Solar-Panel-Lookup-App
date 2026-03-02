@@ -330,3 +330,19 @@ input[type="file"] {
 .faq-link:hover {
     text-decoration: underline;
 }
+
+/* Disclaimer section styling */
+
+.disclaimer-section {
+    margin-top: 40px;
+    padding: 25px;
+    background: #f9fbfc;
+    border-radius: 10px;
+    border-left: 5px solid var(--brand-primary);
+}
+
+.disclaimer-section p {
+    margin: 12px 0;
+    font-size: 16px;
+}
+

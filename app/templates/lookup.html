@@ -18,7 +18,7 @@
 
         <div class="spec-grid">
 
-            <!-- BASIC INFO -->
+            <!-- TRACKING INFORMATION-->
             <div class="spec-block">
                 <h3>Panel ID Specifications</h3>
                 <p2><strong>New Serial ID:</strong> {{ item.new_serial_number}}</p2>
@@ -28,7 +28,7 @@
                 <p><strong>Technology:</strong> {{ item.category }}</p>
             </div>
 
-            <!-- DIMENSIONS -->
+            <!-- PHYSICAL SPECIFICATIONS -->
             <div class="spec-block">
                 <h3>Physical Specifications</h3>
                 <p><strong>Length:</strong> {{ item.length }} m</p>
@@ -43,7 +43,7 @@
 
         <hr class="divider">
 
-        <!-- TEST SECTION -->
+        <!-- PANEL TESTS SECTION -->
         <h2 class="section-title">Panel Test & Electrical Data</h2>
 
         {% if test %}
@@ -94,7 +94,7 @@
             </form>
         </div>
 
-
+        <!-- INQUIRIES SECTION -->
         <hr class="divider">
 
             <div class="faq-section">
@@ -119,6 +119,36 @@
                     <strong>
                     <br><br>    
                     +27 (0) 87 354 9046</strong>
+                </p>
+            </div>
+
+         <!-- DISCLAIMER SECTION -->
+        <hr class="divider">
+
+            <div class="disclaimer-section">
+                <h2 class="section-title">⚠️ Disclaimer</h2>
+
+                <p>
+                    <strong>Refurbished equipment - supplied “as is/voetstoots”.</strong>
+                </p>
+                <p>
+                   <strong> Qualified Installer Only:</strong> Must be installed by a legally registered electrician in full compliance with SANS 10142-1 / 10142-1-2 with a valid CoC issued.
+                </p>
+
+                <p>
+                    <strong>User Responsibilities:</strong> Perform regular inspections, maintain the system, and shut down immediately if heat, smoke, smell, or damage occurs.
+                </p>
+        
+                <p>
+                    <strong>No Liability:</strong> Donor is not liable for loss, injury, damage, or failures caused by installation, misuse, alterations, or lack of maintenance.
+                </p>
+
+                <p>
+                    <strong>End of Life:</strong> Dispose or recycle through an approved EPR programme.
+                </p>
+
+                <p>
+                    <strong>DO NOT MODIFY. DO NOT INSTALL IF DAMAGED.</strong>
                 </p>
             </div>
     </div>
