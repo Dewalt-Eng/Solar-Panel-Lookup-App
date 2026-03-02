@@ -116,7 +116,7 @@ def download_item_qr(internal_code: str, db: Session = Depends(get_db)):
         internal_code=internal_code
     ).first()
 
-    filename = item.reference_code if item else internal_code
+    filename = item.new_serial_number if item else internal_code
 
     return StreamingResponse(
         image_buffer,

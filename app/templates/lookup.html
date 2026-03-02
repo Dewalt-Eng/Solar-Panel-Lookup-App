@@ -14,15 +14,15 @@
 
     <div class="card">
 
-        <h2 class="section-title">Panel Technical Specification</h2>
+        <h2 class="section-title">Panel Technical Specifications</h2>
 
         <div class="spec-grid">
 
             <!-- BASIC INFO -->
             <div class="spec-block">
                 <h3>Panel ID Specifications</h3>
-                <p><strong>Reference ID:</strong> {{ item.reference_code }}</p>
-                <p><strong>Serial:</strong> {{ item.internal_code }}</p>
+                <p2><strong>New Serial ID:</strong> {{ item.new_serial_number}}</p2>
+                <p><strong>Old Serial:</strong> {{ item.internal_code }}</p>
                 <p><strong>Manufacturer:</strong> {{ item.manufacturer }}</p>
                 <p><strong>Model Type:</strong> {{ item.name }}</p>
                 <p><strong>Technology:</strong> {{ item.category }}</p>
@@ -98,7 +98,7 @@
         <hr class="divider">
 
             <div class="faq-section">
-                <h2 class="section-title">FAQ</h2>
+                <h2 class="section-title">For Inquiries</h2>
 
                 <p>
                     For the collection and recycling of your panels, please contact
