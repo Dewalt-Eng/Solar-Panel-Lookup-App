@@ -127,6 +127,39 @@ def download_item_qr(internal_code: str, db: Session = Depends(get_db)):
     )
 
 
+@router.get("/qr/download-all")
+def download_all_qr(db: Session = Depends(get_db)):
+
+    base_url = os.getenv("BASE_URL", "http://127.0.0.1:8000")
+
+    items = db.query(models.Item).all()
+
+    # Create in-memory zip buffer
+    zip_buffer = io.BytesIO()
+
+    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+
+        for item in items:
+
+            lookup_url = f"{base_url}/items/lookup-view?serial={item.internal_code}"
+
+            image_buffer = generate_qr_image(lookup_url)
+
+            # Use reference_code for filename if available
+            filename = item.new_serial_number or item.internal_code
+            zip_file.writestr(f"{filename}.png", image_buffer.getvalue())
+
+    zip_buffer.seek(0)
+
+    return StreamingResponse(
+        zip_buffer,
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": "attachment; filename=all_qr_codes.zip"
+        }
+    )
+
+
 @router.get("/lookup-view")
 def lookup_view(
     serial: str,
@@ -184,35 +217,3 @@ def debug_count(db: Session = Depends(get_db)):
     return {
         "item_count": db.query(models.Item).count()
     }    
-
-@router.get("/qr/download-all")
-def download_all_qr(db: Session = Depends(get_db)):
-
-    base_url = os.getenv("BASE_URL", "http://127.0.0.1:8000")
-
-    items = db.query(models.Item).all()
-
-    # Create in-memory zip buffer
-    zip_buffer = io.BytesIO()
-
-    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
-
-        for item in items:
-
-            lookup_url = f"{base_url}/items/lookup-view?serial={item.internal_code}"
-
-            image_buffer = generate_qr_image(lookup_url)
-
-            # Use reference_code for filename if available
-            filename = item.reference_code or item.internal_code
-            zip_file.writestr(f"{filename}.png", image_buffer.getvalue())
-
-    zip_buffer.seek(0)
-
-    return StreamingResponse(
-        zip_buffer,
-        media_type="application/zip",
-        headers={
-            "Content-Disposition": "attachment; filename=all_qr_codes.zip"
-        }
-    )
