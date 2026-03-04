@@ -352,4 +352,7 @@ input[type="file"] {
     font-size: 16px;
 }
 
-
+.disclaimer ul {
+    padding-left: 20px;
+     font-size: 12px;
+}
