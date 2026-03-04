@@ -116,7 +116,8 @@ def download_item_qr(internal_code: str, db: Session = Depends(get_db)):
         internal_code=internal_code
     ).first()
 
-    filename = item.new_serial_number if item else internal_code
+    #filename = item.new_serial_number if item else internal_code 
+    filename = internal_code 
 
     return StreamingResponse(
         image_buffer,
@@ -146,7 +147,7 @@ def download_all_qr(db: Session = Depends(get_db)):
             image_buffer = generate_qr_image(lookup_url)
 
             # Use reference_code for filename if available
-            filename = item.new_serial_number or item.internal_code
+            filename =item.internal_code or item.new_serial_number
             zip_file.writestr(f"{filename}.png", image_buffer.getvalue())
 
     zip_buffer.seek(0)
