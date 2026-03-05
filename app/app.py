@@ -1,3 +1,5 @@
+#Code used to setup the api using the necessary imports
+
 from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
 from fastapi import Request

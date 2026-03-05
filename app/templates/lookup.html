@@ -1,3 +1,4 @@
+<!-- HTML used for all the UI components and layout for the lookup page-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,14 +12,16 @@
 </div>
 
 <div class="container">
-
+    
+    <!-- CARD USED FOR DISPLAYING ALL THE PAGE SECTIONS -->
     <div class="card">
 
+        <!-- PANEL INFORMATION SECTION -->
         <h2 class="section-title">Panel Technical Specifications</h2>
 
         <div class="spec-grid">
 
-            <!-- TRACKING INFORMATION-->
+            <!-- TRACKING INFORMATION -->
             <div class="spec-block">
                 <h3>Panel ID Specifications</h3>
                 <p2><strong>New Serial ID:</strong> {{ item.new_serial_number}}</p2>
@@ -50,6 +53,7 @@
 
         <div class="spec-grid">
 
+            <!-- PANEL TEST SUMMARY -->
             <div class="spec-block">
                 <h3>Testing Summary</h3>
                 <br>
@@ -67,6 +71,7 @@
                 </div>
             </div>
 
+            <!-- PANEL TEST PARAMETERS -->
             <div class="spec-block">
                 <h3>Panel Test Parameters</h3>
                 <p><b>Solution Resistivity:</b> {{ test.solution_resistivity }} Ω-cm</p>
@@ -97,8 +102,13 @@
         <!-- INQUIRIES SECTION -->
         <hr class="divider">
 
+            <details class="faq">
+
+            <summary class="faq-title">
+                For Inquiries
+             </summary> 
+
             <div class="faq-section">
-                <h2 class="section-title">For Inquiries</h2>
 
                 <p>
                     For the collection and recycling of your panels, please contact
@@ -121,6 +131,7 @@
                     +27 (0) 87 354 9046</strong>
                 </p>
             </div>
+            </details>
 
          <!-- DISCLAIMER SECTION -->
         <hr class="divider">

@@ -1,3 +1,4 @@
+<!-- HTML used to setup the layout and components of the dashboard page -->
 <!DOCTYPE html>
 <html>
 
@@ -13,7 +14,6 @@
     <h1>Solar Panel Lookup Control App</h1>
 </div>   
 
-
 <div class="container">
     <h1>File upload and QR Lookup</h1>      
 
@@ -23,28 +23,31 @@
 </div>
 {% endif %}
 
-<div class="card">
-    <h2>Import Solar Panel Datasheet</h2>
-    <form action="/upload/import" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <button type="submit">Upload Datasheet</button>
-    </form>
-</div>
-
+    <!-- UPLOAD FILE SECTION -->
     <div class="card">
-        <h2>QR Lookup using Serial Number</h2>
-        <form action="/items/lookup-view" method="get">
-            <input type="text" name="serial" placeholder="Enter Serial Number" required>
-            <button type="submit">View Item</button>
-        </form>
+            <h2>Import Solar Panel Datasheet</h2>
+            <form action="/upload/import" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button type="submit">Upload Datasheet</button>
+            </form>
     </div>
 
+    <!-- MANUAL QR LOOKUP SECTION -->
+    <div class="card">
+            <h2>QR Lookup using Serial Number</h2>
+            <form action="/items/lookup-view" method="get">
+                <input type="text" name="serial" placeholder="Enter Serial Number" required>
+                <button type="submit">View Item</button>
+            </form>
+    </div>
+
+    <!-- VIEW ALL PANELS DIRECT -->
     <div style="margin-top: 15px;">
-        <form action="/items/all" method="get">
-            <button type="submit" class="secondary-btn">
-            View All Panel QR's
-            </button>
-        </form>
+            <form action="/items/all" method="get">
+                <button type="submit" class="secondary-btn">
+                View All Panel QR's
+                </button>
+            </form>
     </div>
 
 
