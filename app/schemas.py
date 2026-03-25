@@ -1,10 +1,12 @@
+#Imports used for the code describing the schemas of endpoints
 from pydantic import BaseModel
 from uuid import UUID
 from datetime import date
 from typing import Optional
 
+####################################
 # ---------- ITEM SCHEMAS ----------
-
+####################################
 class ItemCreate(BaseModel):
     internal_code: str
     name: Optional[str] = None
@@ -27,8 +29,9 @@ class ItemResponse(ItemCreate):
     class Config:
         from_attributes = True
 
-
+##############################################
 # ---------- PANEL TESTING SCHEMAS ----------
+##############################################
 
 class PanelTestCreate(BaseModel):
     internal_code: str

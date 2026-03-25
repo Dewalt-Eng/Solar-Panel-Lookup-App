@@ -1,8 +1,9 @@
+#imports used for the reporting implementation
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from app import models
 
-
+#implementing for reporting of a panel's test results by joining using the id
 def get_items_with_tests(db: Session):
 
     stmt = (

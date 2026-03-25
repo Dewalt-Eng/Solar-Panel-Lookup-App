@@ -1,7 +1,9 @@
+#imports used for the code responsible for implementing upload functionalities
 import pandas as pd
 from app import models
 from datetime import datetime
 
+#help ensure clean serial_number imported
 def clean_serial(value):
     return (
         str(value)
@@ -11,6 +13,7 @@ def clean_serial(value):
         .replace(" ", "")
     )
 
+#help ensure clean float values imported
 def safe_float(value):
     try:
         if value in [None, "", "nan"]:
@@ -19,6 +22,7 @@ def safe_float(value):
     except:
         return None
 
+#help ensure clean integer values imported
 def safe_int(value):
     try:
         if value in [None, "", "nan"]:
@@ -27,11 +31,13 @@ def safe_int(value):
     except:
         return None
 
+#help ensure clean string values imported
 def safe_str(value):
     if value in [None, "", "nan"]:
         return None
     return str(value).strip()
 
+#function responsible for the import 
 def import_master_sheet(db, file_path: str):
 
     df = pd.read_excel(file_path, dtype=str)
@@ -56,8 +62,11 @@ def import_master_sheet(db, file_path: str):
             continue
 
         serial = str(serial).strip()
-
+        
+        ###################################
         # ---------- ITEM UPSERT ----------
+        ###################################
+        
         item = db.query(models.Item).filter_by(
             internal_code=serial
         ).first()
@@ -93,7 +102,9 @@ def import_master_sheet(db, file_path: str):
             item.new_serial_number = safe_str(row.get("new_serial_number"))
             updated_items += 1
 
+        ###################################
         # ---------- TEST UPSERT ----------
+        ###################################
 
         test_date_raw = row.get("test_date")
         if not test_date_raw:

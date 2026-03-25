@@ -1,9 +1,10 @@
+#imports used by the QR service implementation
 import qrcode
 from PIL import Image
 import io
 import os
 
-
+#this code is used to implement the generation of the QR images, the styling and formatting of the images
 def generate_qr_image(url: str):
 
     # High error correction because we overlay a logo

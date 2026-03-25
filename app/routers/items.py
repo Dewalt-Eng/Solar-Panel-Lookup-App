@@ -1,3 +1,6 @@
+#This code is responsible for the implementation for the web apps endpoints
+
+#All of the imports used for the endpoints of the web app
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from app.db import get_db
@@ -13,9 +16,18 @@ import zipfile
 
 templates = Jinja2Templates(directory="app/templates")
 
-
+#provides the chosen "items" path and tags to the route operations w.r.t the lookup endpoints
 router = APIRouter(prefix="/items", tags=["Items"])
 
+###############################################################
+#IMPORTANT NOTE: 
+# NOT ALL ENDPOINTS ARE NOT IN ACTIVE USE IN THE DEPLOYED CODE W.R.T THE UI ACCESSABILITY
+# MANY ENDPOINTS ARE USED FOR DEVELOPMENT, DEBUGGING AND TESTING PURPOSES
+# COMMENTS WILL BE USED TO EXPLAIN THE NATURE OF EACH ENDPOINT 
+###############################################################
+
+
+#this is the endpoint used to create an panel entry and store is in the database based on the defined schema
 @router.post("/", response_model=schemas.ItemResponse)
 def create_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
 
@@ -26,6 +38,7 @@ def create_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
 
     return db_item
 
+#this is the endpoint used to create an panel test entry and store is in the database based on the defined schema
 @router.post("/test")
 def add_test(test: schemas.PanelTestCreate, db: Session = Depends(get_db)):
 
@@ -48,6 +61,7 @@ def add_test(test: schemas.PanelTestCreate, db: Session = Depends(get_db)):
 
     return {"message": "Test added"}
 
+#This was a testing/debugging used to ensure that data could be retrieved from the database
 @router.get("/report")
 def items_report(db: Session = Depends(get_db)):
 
@@ -66,6 +80,7 @@ def items_report(db: Session = Depends(get_db)):
         for row in rows
     ]
 
+#This is the debugging endpoint used for testing a serial_number based lookup on the stored entries of panels
 @router.get("/lookup/{internal_code}")
 def lookup_item(internal_code: str, db: Session = Depends(get_db)):
 
@@ -87,6 +102,7 @@ def lookup_item(internal_code: str, db: Session = Depends(get_db)):
         }
     }
 
+#The is the endpoint for the QR image file generated based on the encoded serial_number endpoint
 @router.get("/{internal_code}/qr")
 def get_item_qr(internal_code: str):
 
@@ -102,6 +118,7 @@ def get_item_qr(internal_code: str):
     )
     
 
+#The is the endpoint for downloading the generated QR image based on the provided serial_number
 @router.get("/{internal_code}/qr/download")
 def download_item_qr(internal_code: str, db: Session = Depends(get_db)):
 
@@ -127,7 +144,7 @@ def download_item_qr(internal_code: str, db: Session = Depends(get_db)):
         }
     )
 
-
+#This is the endpoint used for the generating, zipping and downloading of all generated QR images based on the entries stored
 @router.get("/qr/download-all")
 def download_all_qr(db: Session = Depends(get_db)):
 
@@ -160,7 +177,7 @@ def download_all_qr(db: Session = Depends(get_db)):
         }
     )
 
-
+#This is the lookup endpoint used for making a serial_number based lookup on the stored entries of panels
 @router.get("/lookup-view")
 def lookup_view(
     serial: str,
@@ -199,7 +216,7 @@ def lookup_view(
         }
     )
 
-
+#This is the testing endpoint used for displaying all the stored entries of panels that are stored in the database
 @router.get("/all")
 def view_all_items(request: Request, db: Session = Depends(get_db)):
 
@@ -213,6 +230,7 @@ def view_all_items(request: Request, db: Session = Depends(get_db)):
         }
     )
 
+#This a debugging and testing endpoint used to determine whether the database is working and storing the data
 @router.get("/debug-count")
 def debug_count(db: Session = Depends(get_db)):
     return {

@@ -1,3 +1,4 @@
+#imports used for the code used to implement the data models
 import uuid
 from sqlalchemy import Column, String, Date, ForeignKey, Float, Integer
 from sqlalchemy.dialects.postgresql import UUID
@@ -6,12 +7,13 @@ from app.db import Base
 from datetime import datetime
 import secrets
 
-
+#code used to implement the new internal serial number / tracking ID
 def generate_reference_code():
     date_part = datetime.utcnow().strftime("%Y%m%d")
     hex_part = secrets.token_hex(4).upper()  # 8 hex chars
     return f"{date_part}-{hex_part}"
 
+#data model used for the verification and storage of the panel data extracted entries from the imported sheet
 class Item(Base):
     __tablename__ = "items"
 
@@ -35,7 +37,7 @@ class Item(Base):
         cascade="all, delete"
     )
 
-
+#data model used for the verification and storage of the panel test data extracted entries from the imported sheet
 class PanelTest(Base):
     __tablename__ = "panel_tests"
 

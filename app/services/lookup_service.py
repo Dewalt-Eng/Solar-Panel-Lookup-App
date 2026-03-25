@@ -1,8 +1,9 @@
+#imports used for the lookup service implementation
 from sqlalchemy.orm import Session
 from sqlalchemy import select, desc
 from app import models
 
-
+#this code is used to extract the latest panel test results from the looked up database entry
 def get_item_with_latest_test(db: Session, internal_code: str):
 
     # Get item
